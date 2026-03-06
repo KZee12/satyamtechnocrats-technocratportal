@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Satyam Technocrats — Technocrat Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #2E3192;
+    --navy-dark: #1e206e;
+    --navy-light: #3d40b0;
+    --pink: #EC1C6F;
+    --purple: #662D91;
+    --bg: #F2F4FA;
+    --surface: #FFFFFF;
+    --border: #DDE1EF;
+    --text: #111827;
+    --text-dim: #6B7280;
+    --text-light: #9CA3AF;
+    --title: 'Google Sans', 'Segoe UI', sans-serif;
+    --body: 'Trebuchet MS', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+  .header-stripe {
+    height: 4px;
+    background: linear-gradient(90deg, var(--pink) 0%, var(--purple) 100%);
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 24px 32px;
+    position: relative;
+    z-index: 2;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(102,45,145,0.25) 0%, transparent 70%);
+    z-index: 1;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    right: 120px; bottom: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(236,28,111,0.15) 0%, transparent 70%);
+    z-index: 1;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .brand { display: flex; flex-direction: column; gap: 4px; }
+  .brand-name {
+    font-family: var(--title);
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .brand-tag {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .header-time {
+    text-align: right;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    line-height: 1.8;
+  }
+  .portal-title {
+    font-family: var(--title);
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: inline-block;
+  }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 24px 80px;
+  }
+
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .section-pip { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .pip-forms { background: var(--pink); }
+  .pip-crm   { background: var(--navy); }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 22px 22px 18px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+    animation: cardIn 0.4s ease both;
+  }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .card.form::before { background: linear-gradient(90deg, var(--pink), var(--purple)); }
+  .card.crm::before  { background: linear-gradient(90deg, var(--navy), var(--navy-light)); }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(46,49,146,0.12);
+    border-color: rgba(46,49,146,0.2);
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card.soon {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-form { background: rgba(236,28,111,0.08); }
+  .icon-crm  { background: rgba(46,49,146,0.08); }
+
+  .card-body { flex: 1; }
+  .card-title {
+    font-family: var(--title);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+  }
+  .card-tag {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .tag-live     { background: rgba(22,163,74,0.1);   color: #16a34a; }
+  .tag-soon     { background: rgba(107,114,128,0.1);  color: var(--text-dim); }
+  .tag-external { background: rgba(46,49,146,0.08);   color: var(--navy); }
+
+  .card-arrow {
+    font-size: 16px;
+    color: var(--text-light);
+    transition: transform 0.2s, color 0.2s;
+  }
+  .card:hover .card-arrow { transform: translateX(4px); color: var(--navy); }
+
+  footer { background: var(--navy); }
+  .footer-stripe {
+    height: 3px;
+    background: linear-gradient(90deg, var(--pink) 0%, var(--purple) 100%);
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer-inner span {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .brand-name { font-size: 18px; }
+    .cards { grid-template-columns: 1fr; }
+    .header-inner { padding: 20px 16px 24px; }
+    main { padding: 24px 16px 60px; }
+    .footer-inner { flex-direction: column; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-stripe"></div>
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-name">Satyam Technocrats</div>
+        <div class="brand-tag">...innovative dimension in automation</div>
+      </div>
+      <div class="header-time" id="headerTime"></div>
+    </div>
+    <div class="portal-title">Technocrat Portal</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- FORMS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-pip pip-forms"></div>
+      <div class="section-label">Forms</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards">
+
+      <a class="card form" href="./escalation-form/index.html">
+        <div class="card-icon icon-form">📋</div>
+        <div class="card-body">
+          <div class="card-title">Pre-Escalation Checklist</div>
+          <div class="card-desc">Complete before escalating any problem to a senior. Documents failure, resources consulted, context, and proposed fix.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag tag-live">Live</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <div class="card form soon">
+        <div class="card-icon icon-form">📈</div>
+        <div class="card-body">
+          <div class="card-title">Progression Log</div>
+          <div class="card-desc">Log project progress milestones, completion status, and activity updates for active projects.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag tag-soon">Coming Soon</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+
+      <div class="card form soon">
+        <div class="card-icon icon-form">📨</div>
+        <div class="card-body">
+          <div class="card-title">Correspondence Log</div>
+          <div class="card-desc">Record all external correspondences — emails, calls, meetings — with clients, vendors, and partners.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag tag-soon">Coming Soon</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CRM -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-pip pip-crm"></div>
+      <div class="section-label">CRM</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards">
+
+      <a class="card crm" href="#" id="crmLink">
+        <div class="card-icon icon-crm">📊</div>
+        <div class="card-body">
+          <div class="card-title">Sales CRM</div>
+          <div class="card-desc">Master leads database. Track prospects, pipeline status, follow-ups, and deal history across KS and ST.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag tag-external">Cloud File</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-stripe"></div>
+  <div class="footer-inner">
+    <span>Satyam Technocrats Pvt. Ltd.</span>
+    <span>kzee12.github.io/satyamtechnocrats-technocratportal</span>
+    <span id="footerYear"></span>
+  </div>
+</footer>
+
+<script>
+  function updateTime() {
+    const now = new Date();
+    const date = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    const time = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('headerTime').innerHTML = `${date}<br>${time}`;
+  }
+  updateTime();
+  setInterval(updateTime, 60000);
+  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear();
+</script>
+
+</body>
+</html>
