@@ -3,23 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Satyam Technocrats — Technocrat Portal</title>
+<title>Pre-Escalation Protocol</title>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
+    --bg: #F4F6FA;
+    --surface: #FFFFFF;
+    --border: #D8DCE8;
     --navy: #2E3192;
-    --navy-dark: #1e206e;
-    --navy-light: #3d40b0;
+    --navy-dark: #1e2070;
     --pink: #EC1C6F;
     --purple: #662D91;
-    --bg: #F2F4FA;
-    --surface: #FFFFFF;
-    --border: #DDE1EF;
-    --text: #111827;
+    --text: #1A1A2E;
     --text-dim: #6B7280;
-    --text-light: #9CA3AF;
-    --title: 'Google Sans', 'Segoe UI', sans-serif;
-    --body: 'Trebuchet MS', sans-serif;
+    --danger: #DC2626;
+    --ok: #16A34A;
+    --title-font: 'Google Sans', 'Segoe UI', sans-serif;
+    --head-font: 'Trebuchet MS', sans-serif;
+    --body-font: 'Calibri', 'Carlito', sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,358 +28,838 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: var(--body);
+    font-family: var(--body-font);
     min-height: 100vh;
   }
 
-  header {
+  /* PRINT STYLES */
+  @media print {
+    body { background: #fff; }
+    .no-print { display: none !important; }
+    .form-wrap { display: none !important; }
+    #summary { display: block !important; box-shadow: none; border: none; }
+    .step-block { border: 1px solid #ccc !important; background: #fafafa !important; }
+    .summary-header { border-bottom: 3px solid var(--navy) !important; }
+  }
+
+  /* HEADER */
+  .site-header {
     background: var(--navy);
+    padding: 0;
     position: relative;
     overflow: hidden;
   }
   .header-stripe {
-    height: 4px;
-    background: linear-gradient(90deg, var(--pink) 0%, var(--purple) 100%);
+    height: 5px;
+    background: linear-gradient(90deg, var(--pink) 60%, var(--purple) 100%);
   }
   .header-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 28px 24px 32px;
-    position: relative;
-    z-index: 2;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    right: -60px; top: -60px;
-    width: 320px; height: 320px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(102,45,145,0.25) 0%, transparent 70%);
-    z-index: 1;
-  }
-  header::after {
-    content: '';
-    position: absolute;
-    right: 120px; bottom: -40px;
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(236,28,111,0.15) 0%, transparent 70%);
-    z-index: 1;
-  }
-  .header-top {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    padding: 16px 24px;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
   }
-  .brand { display: flex; flex-direction: column; gap: 4px; }
-  .brand-name {
-    font-family: var(--title);
-    font-size: 22px;
-    font-weight: 700;
-    color: #fff;
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
   .brand-tag {
+    font-family: var(--head-font);
     font-size: 11px;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.6);
     letter-spacing: 2px;
     text-transform: uppercase;
   }
-  .header-time {
-    text-align: right;
+  .header-divider {
+    width: 1px; height: 32px;
+    background: rgba(255,255,255,0.2);
+  }
+  .site-header h1 {
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: 17px;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+  .doc-id {
+    font-family: var(--head-font);
     font-size: 11px;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.5);
     letter-spacing: 1px;
-    line-height: 1.8;
-  }
-  .portal-title {
-    font-family: var(--title);
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding-top: 4px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    display: inline-block;
   }
 
-  main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 36px 24px 80px;
-  }
-
-  .section { margin-bottom: 48px; }
-  .section-header {
+  /* PROGRESS BAR */
+  .progress-bar-wrap {
+    background: var(--surface);
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     gap: 14px;
-    margin-bottom: 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  .section-line { flex: 1; height: 1px; background: var(--border); }
-  .section-label {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--text-dim);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    white-space: nowrap;
+  .progress-steps { display: flex; gap: 5px; flex: 1; }
+  .progress-step {
+    height: 4px; flex: 1;
+    background: #E5E7EB;
+    border-radius: 2px;
+    transition: background 0.35s;
   }
-  .section-pip { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .pip-forms { background: var(--pink); }
-  .pip-crm   { background: var(--navy); }
-
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-  }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 22px 22px 18px;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    position: relative;
-    overflow: hidden;
-    animation: cardIn 0.4s ease both;
-  }
-  .card:nth-child(1) { animation-delay: 0.05s; }
-  .card:nth-child(2) { animation-delay: 0.10s; }
-  .card:nth-child(3) { animation-delay: 0.15s; }
-  .card:nth-child(4) { animation-delay: 0.20s; }
-
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .card.form::before { background: linear-gradient(90deg, var(--pink), var(--purple)); }
-  .card.crm::before  { background: linear-gradient(90deg, var(--navy), var(--navy-light)); }
-
-  .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(46,49,146,0.12);
-    border-color: rgba(46,49,146,0.2);
-  }
-  .card:hover::before { opacity: 1; }
-
-  .card.soon {
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  .card-icon {
-    width: 40px; height: 40px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  .icon-form { background: rgba(236,28,111,0.08); }
-  .icon-crm  { background: rgba(46,49,146,0.08); }
-
-  .card-body { flex: 1; }
-  .card-title {
-    font-family: var(--title);
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 5px;
-  }
-  .card-desc {
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.55;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
-    margin-top: 4px;
-  }
-  .card-tag {
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 3px;
-  }
-  .tag-live     { background: rgba(22,163,74,0.1);   color: #16a34a; }
-  .tag-soon     { background: rgba(107,114,128,0.1);  color: var(--text-dim); }
-  .tag-external { background: rgba(46,49,146,0.08);   color: var(--navy); }
-
-  .card-arrow {
-    font-size: 16px;
-    color: var(--text-light);
-    transition: transform 0.2s, color 0.2s;
-  }
-  .card:hover .card-arrow { transform: translateX(4px); color: var(--navy); }
-
-  footer { background: var(--navy); }
-  .footer-stripe {
-    height: 3px;
-    background: linear-gradient(90deg, var(--pink) 0%, var(--purple) 100%);
-  }
-  .footer-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .footer-inner span {
+  .progress-step.active { background: var(--pink); }
+  .progress-label {
+    font-family: var(--head-font);
     font-size: 11px;
-    color: rgba(255,255,255,0.35);
+    color: var(--text-dim);
+    white-space: nowrap;
     letter-spacing: 1px;
   }
 
+  /* MAIN */
+  .main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 32px 16px 80px;
+  }
+
+  /* STEP CARD */
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--navy);
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(46,49,146,0.07);
+    margin-bottom: 28px;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .step-card.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-num {
+    position: absolute;
+    top: -4px; right: 20px;
+    background: var(--pink);
+    color: #fff;
+    font-family: var(--head-font);
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 12px 4px;
+    border-radius: 0 0 6px 6px;
+    letter-spacing: 1.5px;
+  }
+  .step-card { position: relative; }
+
+  .step-head {
+    padding: 28px 24px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-tag {
+    font-family: var(--head-font);
+    font-size: 10px;
+    color: var(--pink);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .step-title {
+    font-family: var(--title-font);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .step-desc {
+    font-family: var(--body-font);
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 5px;
+    line-height: 1.5;
+  }
+
+  .step-body { padding: 22px 24px; }
+
+  /* FORM FIELDS */
+  label {
+    display: block;
+    font-family: var(--head-font);
+    font-size: 11px;
+    color: var(--navy);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    margin-top: 18px;
+    font-weight: 600;
+  }
+  label:first-child { margin-top: 0; }
+
+  input[type="text"], textarea {
+    width: 100%;
+    background: #F8F9FC;
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    font-family: var(--body-font);
+    font-size: 14px;
+    padding: 11px 13px;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: vertical;
+  }
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 3px rgba(46,49,146,0.1);
+    background: #fff;
+  }
+  textarea { min-height: 100px; }
+
+  .resource-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  @media (max-width: 520px) {
+    .resource-row { grid-template-columns: 1fr; }
+  }
+
+  .char-count {
+    font-family: var(--head-font);
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: right;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+  .char-count.warn { color: var(--pink); }
+
+  .field-error {
+    font-family: var(--head-font);
+    font-size: 10px;
+    color: var(--danger);
+    margin-top: 5px;
+    display: none;
+    letter-spacing: 0.5px;
+  }
+  .field-error.show { display: block; }
+  input.invalid, textarea.invalid {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(220,38,38,0.08);
+  }
+
+  /* NAV */
+  .step-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    background: #F8F9FC;
+    border-radius: 0 0 4px 4px;
+  }
+  .btn {
+    font-family: var(--head-font);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 11px 26px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    transition: all 0.2s;
+    font-weight: 700;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--navy-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(46,49,146,0.25); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1.5px solid var(--border);
+  }
+  .btn-secondary:hover { color: var(--navy); border-color: var(--navy); }
+
+  /* SUMMARY */
+  #summary {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--navy);
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(46,49,146,0.07);
+  }
+
+  .summary-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--navy) 0%, #3d3fa8 100%);
+    border-radius: 0;
+  }
+  .summary-header h2 {
+    font-family: var(--title-font);
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .summary-header .sub {
+    font-family: var(--body-font);
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+  }
+  .summary-header .meta {
+    text-align: right;
+    font-family: var(--head-font);
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.9;
+  }
+
+  .summary-body { padding: 24px 28px; }
+
+  .step-block {
+    background: #F8F9FC;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--navy);
+    border-radius: 3px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .step-block-title {
+    font-family: var(--head-font);
+    font-size: 10px;
+    color: var(--pink);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+  }
+  .summary-label {
+    font-family: var(--head-font);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    margin-top: 12px;
+  }
+  .summary-label:first-child { margin-top: 0; }
+  .summary-value {
+    font-family: var(--body-font);
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  .resource-summary-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .resource-summary-row:last-child { border-bottom: none; }
+  .rs-source {
+    font-family: var(--head-font);
+    font-size: 11px;
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .rs-finding { font-family: var(--body-font); color: var(--text); }
+
+  .audit-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--body-font);
+    font-size: 13px;
+  }
+  .audit-row:last-child { border-bottom: none; }
+  .audit-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .audit-dot.pass { background: var(--ok); }
+  .audit-dot.fail { background: var(--danger); }
+  .audit-status {
+    margin-left: auto;
+    font-family: var(--head-font);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+  .audit-status.pass { color: var(--ok); }
+  .audit-status.fail { color: var(--danger); }
+
+  .summary-actions {
+    padding: 18px 28px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: #F8F9FC;
+  }
+
+  /* INTRO */
+  .intro-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--pink);
+    border-radius: 4px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .intro-banner h2 {
+    font-family: var(--head-font);
+    font-size: 11px;
+    color: var(--pink);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .intro-banner p {
+    font-family: var(--body-font);
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .intro-banner p strong { color: var(--text); }
+
+  /* RULE BOX */
+  .rule-box {
+    background: rgba(46,49,146,0.04);
+    border: 1px solid rgba(46,49,146,0.15);
+    border-radius: 3px;
+    padding: 12px 16px;
+    margin-top: 18px;
+    font-family: var(--body-font);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .rule-box strong { color: var(--navy); }
+
+  /* MOBILE */
   @media (max-width: 600px) {
-    .brand-name { font-size: 18px; }
-    .cards { grid-template-columns: 1fr; }
-    .header-inner { padding: 20px 16px 24px; }
-    main { padding: 24px 16px 60px; }
-    .footer-inner { flex-direction: column; gap: 4px; }
+    .header-inner { padding: 14px 16px; }
+    .site-header h1 { font-size: 14px; }
+    .main { padding: 20px 12px 60px; }
+    .step-head { padding: 24px 16px 14px; }
+    .step-body { padding: 18px 16px; }
+    .step-nav { padding: 14px 16px; }
+    .btn { padding: 11px 18px; font-size: 11px; }
+    .summary-body { padding: 18px 16px; }
+    .summary-actions { padding: 14px 16px; }
+    .resource-summary-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<header>
+<div class="site-header no-print">
   <div class="header-stripe"></div>
   <div class="header-inner">
-    <div class="header-top">
-      <div class="brand">
-        <div class="brand-name">Satyam Technocrats</div>
-        <div class="brand-tag">...innovative dimension in automation</div>
+    <div class="header-left">
+      <div>
+        <div class="brand-tag">Satyam Technocrats</div>
+        <h1>Pre-Escalation Checklist</h1>
       </div>
-      <div class="header-time" id="headerTime"></div>
+      <div class="header-divider"></div>
+      <div class="brand-tag" style="font-size:10px;color:rgba(255,255,255,0.4);max-width:160px;line-height:1.5">Autonomous Engineer Protocol</div>
     </div>
-    <div class="portal-title">Technocrat Portal</div>
+    <div class="doc-id" id="docId">AEP-—</div>
   </div>
-</header>
+</div>
 
-<main>
+<div class="progress-bar-wrap no-print">
+  <div class="progress-steps">
+    <div class="progress-step" id="ps1"></div>
+    <div class="progress-step" id="ps2"></div>
+    <div class="progress-step" id="ps3"></div>
+    <div class="progress-step" id="ps4"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">STEP 1 OF 4</div>
+</div>
 
-  <!-- FORMS -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-pip pip-forms"></div>
-      <div class="section-label">Forms</div>
-      <div class="section-line"></div>
-    </div>
-    <div class="cards">
+<div class="main">
 
-      <a class="card form" href="./escalation-form/index.html">
-        <div class="card-icon icon-form">📋</div>
-        <div class="card-body">
-          <div class="card-title">Pre-Escalation Checklist</div>
-          <div class="card-desc">Complete before escalating any problem to a senior. Documents failure, resources consulted, context, and proposed fix.</div>
-        </div>
-        <div class="card-footer">
-          <span class="card-tag tag-live">Live</span>
-          <span class="card-arrow">→</span>
-        </div>
-      </a>
+  <div class="intro-banner no-print">
+    <h2>Mandatory Pre-Escalation Protocol</h2>
+    <p>Complete all four steps honestly before escalating. <strong>Incomplete submissions will be returned.</strong> The act of completing this form is itself part of the troubleshooting process.</p>
+  </div>
 
-      <div class="card form soon">
-        <div class="card-icon icon-form">📈</div>
-        <div class="card-body">
-          <div class="card-title">Progression Log</div>
-          <div class="card-desc">Log project progress milestones, completion status, and activity updates for active projects.</div>
-        </div>
-        <div class="card-footer">
-          <span class="card-tag tag-soon">Coming Soon</span>
-          <span class="card-arrow">→</span>
+  <div class="form-wrap no-print" id="formWrap">
+
+    <!-- STEP 1 -->
+    <div class="step-card active" id="step1">
+      <div class="step-num">STEP 01 / 04</div>
+      <div class="step-head">
+        <div class="step-tag">Failure Identification</div>
+        <div class="step-title">What exactly broke?</div>
+        <div class="step-desc">Describe the failure with full specificity. Vague descriptions will be rejected.</div>
+      </div>
+      <div class="step-body">
+        <label for="engineerName">Your Name</label>
+        <input type="text" id="engineerName" placeholder="e.g. Ravi Kumar">
+        <div class="field-error" id="err-engineerName">Name is required.</div>
+
+        <label for="projectName">Subject</label>
+        <input type="text" id="projectName" placeholder="e.g. Robotic MIG Welding Cell - Siemens S7-1200 / ABB IRB 2600ID">
+        <div class="field-error" id="err-projectName">Project name is required.</div>
+
+        <label for="failureDesc">Specific Failure Description</label>
+        <textarea id="failureDesc" placeholder="Describe the exact error: error codes, fault messages, observed behavior vs. expected behavior, when it started, under what conditions..." style="min-height:130px"></textarea>
+        <div class="char-count" id="cc-failureDesc">0 / 80 min</div>
+        <div class="field-error" id="err-failureDesc">Minimum 80 characters required. Be specific.</div>
+
+        <div class="rule-box">
+          <strong>Required:</strong> Error messages, fault codes, system logs, or specific observed behaviors that deviate from expected output. "It's not working" is not a failure description.
         </div>
       </div>
+      <div class="step-nav">
+        <div></div>
+        <button class="btn btn-primary" onclick="goNext(1)">NEXT →</button>
+      </div>
+    </div>
 
-      <div class="card form soon">
-        <div class="card-icon icon-form">📨</div>
-        <div class="card-body">
-          <div class="card-title">Correspondence Log</div>
-          <div class="card-desc">Record all external correspondences — emails, calls, meetings — with clients, vendors, and partners.</div>
+    <!-- STEP 2 -->
+    <div class="step-card" id="step2">
+      <div class="step-num">STEP 02 / 04</div>
+      <div class="step-head">
+        <div class="step-tag">Exhausted Resources</div>
+        <div class="step-title">What did you already try?</div>
+        <div class="step-desc">Document three independent resources you consulted. YouTube counts. Google counts. Manual counts.</div>
+      </div>
+      <div class="step-body">
+
+        <div style="margin-bottom:6px">
+          <label style="margin-top:0">Resource 1</label>
+          <div class="resource-row">
+            <input type="text" id="res1src" placeholder="Source (e.g. Siemens TIA Manual §4.2)">
+            <input type="text" id="res1find" placeholder="What you found / why it didn't solve it">
+          </div>
+          <div class="field-error" id="err-res1">Both fields required for Resource 1.</div>
         </div>
-        <div class="card-footer">
-          <span class="card-tag tag-soon">Coming Soon</span>
-          <span class="card-arrow">→</span>
+
+        <div style="margin-bottom:6px">
+          <label>Resource 2</label>
+          <div class="resource-row">
+            <input type="text" id="res2src" placeholder="Source (e.g. YouTube – RealPars)">
+            <input type="text" id="res2find" placeholder="What you found / why it didn't solve it">
+          </div>
+          <div class="field-error" id="err-res2">Both fields required for Resource 2.</div>
         </div>
+
+        <div>
+          <label>Resource 3</label>
+          <div class="resource-row">
+            <input type="text" id="res3src" placeholder="Source (e.g. Stack Overflow / colleague)">
+            <input type="text" id="res3find" placeholder="What you found / why it didn't solve it">
+          </div>
+          <div class="field-error" id="err-res3">Both fields required for Resource 3.</div>
+        </div>
+
+        <div class="rule-box">
+          <strong>Rule:</strong> All three resources must be genuinely independent. "I checked twice" is one resource.
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goBack(2)">← BACK</button>
+        <button class="btn btn-primary" onclick="goNext(2)">NEXT →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-card" id="step3">
+      <div class="step-num">STEP 03 / 04</div>
+      <div class="step-head">
+        <div class="step-tag">Intent & Functional Logic</div>
+        <div class="step-title">What is this task supposed to achieve?</div>
+        <div class="step-desc">Explain the intended outcome in the context of the broader work. Submissions without context will be returned.</div>
+      </div>
+      <div class="step-body">
+        <label for="networkBlock">Task / Activity Reference</label>
+        <input type="text" id="networkBlock" placeholder="e.g. OB1 > Network 7 – Motor Start Interlock">
+        <div class="field-error" id="err-networkBlock">Task reference is required.</div>
+
+        <label for="intendedLogic">Intended Outcome &amp; Context</label>
+        <textarea id="intendedLogic" placeholder="What is this task supposed to achieve? What is its role in the overall scope of work? What conditions or inputs are involved? What does a successful output look like?" style="min-height:130px"></textarea>
+        <div class="char-count" id="cc-intendedLogic">0 / 80 min</div>
+        <div class="field-error" id="err-intendedLogic">Minimum 80 characters required. Explain in context.</div>
+
+        <div class="rule-box">
+          <strong>Mandatory:</strong> Define the intended outcome AND the specific role of this task within the broader scope of work. Generic descriptions will be rejected.
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goBack(3)">← BACK</button>
+        <button class="btn btn-primary" onclick="goNext(3)">NEXT →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step-card" id="step4">
+      <div class="step-num">STEP 04 / 04</div>
+      <div class="step-head">
+        <div class="step-tag">Solution Hypothesis</div>
+        <div class="step-title">What do you think the fix is?</div>
+        <div class="step-desc">Propose a solution. Even if uncertain. A hypothesis forces thinking. "I don't know" is not acceptable here.</div>
+      </div>
+      <div class="step-body">
+        <label for="proposedFix">Proposed Fix / Workaround</label>
+        <textarea id="proposedFix" placeholder="Your recommended fix, workaround, or next action. Ground it in what you found in Step 2.
+
+If you have run out of ideas, write what you tried and why each attempt did not work — that is still a valid submission." style="min-height:130px"></textarea>
+        <div class="char-count" id="cc-proposedFix">0 / 60 min</div>
+        <div class="field-error" id="err-proposedFix">Minimum 60 characters required. Make a real attempt.</div>
+
+        <label for="whyEscalate">Why Can't You Implement This Yourself?</label>
+        <textarea id="whyEscalate" placeholder="What specific access, knowledge, or authority do you lack that requires escalation?" style="min-height:80px"></textarea>
+        <div class="field-error" id="err-whyEscalate">This field is required.</div>
+
+        <div class="rule-box">
+          <strong>Final check:</strong> Proposals must be grounded in findings from Step 2. "I think maybe it could be X" backed by zero research is not a hypothesis.
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goBack(4)">← BACK</button>
+        <button class="btn btn-primary" onclick="generateSummary()">GENERATE SUMMARY →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SUMMARY -->
+  <div id="summary">
+    <div class="summary-header">
+      <div>
+        <div style="font-family:var(--head-font);font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:6px">Escalation Report · Satyam Technocrats</div>
+        <h2>Pre-Escalation Audit</h2>
+        <div class="sub" id="summEngineer"></div>
+      </div>
+      <div class="meta" id="summMeta"></div>
+    </div>
+
+    <div class="summary-body">
+
+      <!-- AUDIT CHECKLIST -->
+      <div class="step-block">
+        <div class="step-block-title">Final Verification — Pre-Escalation Audit</div>
+        <div id="auditRows"></div>
+      </div>
+
+      <!-- STEP 1 SUMMARY -->
+      <div class="step-block">
+        <div class="step-block-title">01 — Failure Identification</div>
+        <div class="summary-label">Project / Machine</div>
+        <div class="summary-value" id="s-project"></div>
+        <div class="summary-label">Failure Description</div>
+        <div class="summary-value" id="s-failure"></div>
+      </div>
+
+      <!-- STEP 2 SUMMARY -->
+      <div class="step-block">
+        <div class="step-block-title">02 — Exhausted Resources</div>
+        <div id="s-resources"></div>
+      </div>
+
+      <!-- STEP 3 SUMMARY -->
+      <div class="step-block">
+        <div class="step-block-title">03 — Intent & Functional Logic</div>
+        <div class="summary-label">Task / Activity Reference</div>
+        <div class="summary-value" id="s-block"></div>
+        <div class="summary-label">Intended Outcome &amp; Context</div>
+        <div class="summary-value" id="s-logic"></div>
+      </div>
+
+      <!-- STEP 4 SUMMARY -->
+      <div class="step-block">
+        <div class="step-block-title">04 — Solution Hypothesis</div>
+        <div class="summary-label">Proposed Fix</div>
+        <div class="summary-value" id="s-fix"></div>
+        <div class="summary-label">Reason for Escalation</div>
+        <div class="summary-value" id="s-why"></div>
       </div>
 
     </div>
-  </div>
 
-  <!-- CRM -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-pip pip-crm"></div>
-      <div class="section-label">CRM</div>
-      <div class="section-line"></div>
-    </div>
-    <div class="cards">
-
-      <a class="card crm" href="#" id="crmLink">
-        <div class="card-icon icon-crm">📊</div>
-        <div class="card-body">
-          <div class="card-title">Sales CRM</div>
-          <div class="card-desc">Master leads database. Track prospects, pipeline status, follow-ups, and deal history across KS and ST.</div>
-        </div>
-        <div class="card-footer">
-          <span class="card-tag tag-external">Cloud File</span>
-          <span class="card-arrow">→</span>
-        </div>
-      </a>
-
+    <div class="summary-actions no-print">
+      <button class="btn btn-primary" onclick="window.print()">Print Summary</button>
+      <button class="btn btn-secondary" onclick="resetForm()">← NEW SUBMISSION</button>
     </div>
   </div>
 
-</main>
-
-<footer>
-  <div class="footer-stripe"></div>
-  <div class="footer-inner">
-    <span>Satyam Technocrats Pvt. Ltd.</span>
-    <span>kzee12.github.io/satyamtechnocrats-technocratportal</span>
-    <span id="footerYear"></span>
-  </div>
-</footer>
+</div>
 
 <script>
-  function updateTime() {
-    const now = new Date();
-    const date = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-    const time = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('headerTime').innerHTML = `${date}<br>${time}`;
+  let currentStep = 1;
+  const totalSteps = 4;
+
+  // Generate doc ID
+  const docId = 'AEP-' + Date.now().toString(36).toUpperCase().slice(-6);
+  document.getElementById('docId').textContent = docId;
+
+  function updateProgress(step) {
+    for (let i = 1; i <= totalSteps; i++) {
+      const el = document.getElementById('ps' + i);
+      el.classList.toggle('active', i <= step);
+    }
+    document.getElementById('progressLabel').textContent = `STEP ${step} OF ${totalSteps}`;
   }
-  updateTime();
-  setInterval(updateTime, 60000);
-  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear();
+
+  updateProgress(1);
+
+  // Char counters
+  ['failureDesc', 'intendedLogic', 'proposedFix'].forEach(id => {
+    const el = document.getElementById(id);
+    const min = id === 'proposedFix' ? 60 : 80;
+    const cc = document.getElementById('cc-' + id);
+    el.addEventListener('input', () => {
+      const len = el.value.trim().length;
+      cc.textContent = `${len} / ${min} min`;
+      cc.classList.toggle('warn', len < min);
+    });
+  });
+
+  function showError(id, show) {
+    const el = document.getElementById('err-' + id);
+    const field = document.getElementById(id);
+    if (el) el.classList.toggle('show', show);
+    if (field) field.classList.toggle('invalid', show);
+  }
+
+  function clearErrors(...ids) {
+    ids.forEach(id => showError(id, false));
+  }
+
+  function goNext(step) {
+    let valid = true;
+
+    if (step === 1) {
+      clearErrors('engineerName', 'projectName', 'failureDesc');
+      if (!document.getElementById('engineerName').value.trim()) { showError('engineerName', true); valid = false; }
+      if (!document.getElementById('projectName').value.trim()) { showError('projectName', true); valid = false; }
+      if (document.getElementById('failureDesc').value.trim().length < 80) { showError('failureDesc', true); valid = false; }
+    }
+
+    if (step === 2) {
+      clearErrors('res1', 'res2', 'res3');
+      ['res1', 'res2', 'res3'].forEach(r => {
+        const src = document.getElementById(r + 'src').value.trim();
+        const find = document.getElementById(r + 'find').value.trim();
+        if (!src || !find) { showError(r, true); valid = false; }
+      });
+    }
+
+    if (step === 3) {
+      clearErrors('networkBlock', 'intendedLogic');
+      if (!document.getElementById('networkBlock').value.trim()) { showError('networkBlock', true); valid = false; }
+      if (document.getElementById('intendedLogic').value.trim().length < 80) { showError('intendedLogic', true); valid = false; }
+    }
+
+    if (!valid) return;
+
+    document.getElementById('step' + step).classList.remove('active');
+    currentStep = step + 1;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateProgress(currentStep);
+    window.scrollTo(0, 0);
+  }
+
+  function goBack(step) {
+    document.getElementById('step' + step).classList.remove('active');
+    currentStep = step - 1;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateProgress(currentStep);
+    window.scrollTo(0, 0);
+  }
+
+  function generateSummary() {
+    clearErrors('proposedFix', 'whyEscalate');
+    let valid = true;
+    if (document.getElementById('proposedFix').value.trim().length < 60) { showError('proposedFix', true); valid = false; }
+    if (!document.getElementById('whyEscalate').value.trim()) { showError('whyEscalate', true); valid = false; }
+    if (!valid) return;
+
+    // Populate
+    const name = document.getElementById('engineerName').value.trim();
+    const now = new Date();
+    document.getElementById('summEngineer').textContent = `Submitted by: ${name}`;
+    document.getElementById('summMeta').innerHTML = `
+      Doc ID: ${docId}<br>
+      ${now.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' })}<br>
+      ${now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' })}
+    `;
+
+    document.getElementById('s-project').textContent = document.getElementById('projectName').value.trim();
+    document.getElementById('s-failure').textContent = document.getElementById('failureDesc').value.trim();
+
+    // Resources
+    let resHtml = '';
+    ['res1','res2','res3'].forEach((r, i) => {
+      resHtml += `
+        <div class="resource-summary-row">
+          <div class="rs-source">R${i+1}: ${document.getElementById(r+'src').value.trim()}</div>
+          <div class="rs-finding">${document.getElementById(r+'find').value.trim()}</div>
+        </div>`;
+    });
+    document.getElementById('s-resources').innerHTML = resHtml;
+
+    document.getElementById('s-block').textContent = document.getElementById('networkBlock').value.trim();
+    document.getElementById('s-logic').textContent = document.getElementById('intendedLogic').value.trim();
+    document.getElementById('s-fix').textContent = document.getElementById('proposedFix').value.trim();
+    document.getElementById('s-why').textContent = document.getElementById('whyEscalate').value.trim();
+
+    // Audit
+    const audits = [
+      { label: 'Specific Failure documented in full', pass: document.getElementById('failureDesc').value.trim().length >= 80 },
+      { label: 'Three independent resources cited with findings', pass: true },
+      { label: 'Contextual logic and system role articulated', pass: document.getElementById('intendedLogic').value.trim().length >= 80 },
+      { label: 'Proposed resolution or workaround prepared', pass: document.getElementById('proposedFix').value.trim().length >= 60 },
+    ];
+    document.getElementById('auditRows').innerHTML = audits.map(a => `
+      <div class="audit-row">
+        <div class="audit-dot ${a.pass ? 'pass' : 'fail'}"></div>
+        <div style="font-size:13px">${a.label}</div>
+        <div class="audit-status ${a.pass ? 'pass' : 'fail'}">${a.pass ? 'PASS' : 'FAIL'}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('summary').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  function resetForm() {
+    document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
+    document.querySelectorAll('.field-error').forEach(el => el.classList.remove('show'));
+    document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+    document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+    document.getElementById('step1').classList.add('active');
+    currentStep = 1;
+    updateProgress(1);
+    document.getElementById('formWrap').style.display = 'block';
+    document.getElementById('summary').style.display = 'none';
+    window.scrollTo(0, 0);
+  }
 </script>
 
 </body>
